@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>de.honma.remind</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>connections</key>
+	<dict>
+		<key>054C6308-A1A9-4146-913B-382BD5A97CEC</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C5C36400-C49B-42BB-9D13-51109C686504</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>5ECDF748-8BFA-467F-BB1E-4056087AA4B8</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C5C36400-C49B-42BB-9D13-51109C686504</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>7EB5F01C-8583-4A54-BB71-5F50839F367C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F24978E1-39CC-4C84-ACBD-D0C36302157C</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>C5C36400-C49B-42BB-9D13-51109C686504</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>CA8C7617-28B8-4FCE-933B-D95B233921DA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>C8E2E8EB-E42F-41B3-8ED3-1F3D4C75A0B4</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>6477B1B0-1AD9-4BB8-BD49-68C4EF1AE92E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>sourceoutputuid</key>
+				<string>86373D04-4713-4F87-9352-2E7650CEA4C4</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>CA8C7617-28B8-4FCE-933B-D95B233921DA</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7EB5F01C-8583-4A54-BB71-5F50839F367C</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>F24978E1-39CC-4C84-ACBD-D0C36302157C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C8E2E8EB-E42F-41B3-8ED3-1F3D4C75A0B4</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Tamio Honma</string>
+	<key>description</key>
+	<string>Add a reminder to the Reminder App</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Remind</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>script</key>
+				<string>const sys_events = Application("System Events");
+
+// More keycodes can be added. Keycode reference:
+// http://www.codemacs.com/coding/applescript/applescript-key-codes-reference.8288271.htm
+const key_codes = {
+  "→": 124,
+  "←": 123,
+  "↑": 126,
+  "↓": 125,
+  "⏎": 36,  // Return
+  "⇥": 48,  // Tab
+  "⌫": 51,  // Delete
+  "⎋": 53   // Escape
+};
+const modifiers = {
+  "⌘": "command down",
+  "^": "control down",
+  "⌥": "option down",
+  "⇧": "shift down"
+};
+
+
+function press(hotkey) {
+  const using = [];
+
+  while (hotkey.length &gt; 1) {
+    if (modifiers[hotkey[0]] == undefined) {
+      throw new Error(hotkey[0] + " is not a recognized modifier key");
+    };
+
+    using.push(modifiers[hotkey[0]]);
+    hotkey = hotkey.slice(1);
+  };
+	
+  if (key_codes[hotkey] != undefined) {
+    sys_events.keyCode(key_codes[hotkey], {using: using});
+  } else {
+    sys_events.keystroke(hotkey.toLowerCase(), {using: using});
+  };
+};
+
+function type(text) {
+  for (let i=0; i &lt; text.length; i++) {
+    sys_events.keystroke(text[i]);
+  };
+}
+
+function run(argv) {
+  if (argv) {
+    type(argv)
+  }
+  return argv;
+}</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>7</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>6477B1B0-1AD9-4BB8-BD49-68C4EF1AE92E</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>paths</key>
+				<array>
+					<string>/System/Applications/Reminders.app</string>
+				</array>
+				<key>toggle</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.launchfiles</string>
+			<key>uid</key>
+			<string>CA8C7617-28B8-4FCE-933B-D95B233921DA</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>count</key>
+				<integer>1</integer>
+				<key>keychar</key>
+				<string>n</string>
+				<key>keycode</key>
+				<integer>-1</integer>
+				<key>keymod</key>
+				<integer>1048576</integer>
+				<key>overridewithargument</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.dispatchkeycombo</string>
+			<key>uid</key>
+			<string>F24978E1-39CC-4C84-ACBD-D0C36302157C</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>1</integer>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>15</integer>
+				<key>hotmod</key>
+				<integer>1572864</integer>
+				<key>hotstring</key>
+				<string>R</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>054C6308-A1A9-4146-913B-382BD5A97CEC</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>conditions</key>
+				<array>
+					<dict>
+						<key>inputstring</key>
+						<string>{var:text}</string>
+						<key>matchcasesensitive</key>
+						<false/>
+						<key>matchmode</key>
+						<integer>1</integer>
+						<key>matchstring</key>
+						<string></string>
+						<key>outputlabel</key>
+						<string>Write text</string>
+						<key>uid</key>
+						<string>86373D04-4713-4F87-9352-2E7650CEA4C4</string>
+					</dict>
+				</array>
+				<key>elselabel</key>
+				<string>else</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.conditional</string>
+			<key>uid</key>
+			<string>C8E2E8EB-E42F-41B3-8ED3-1F3D4C75A0B4</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string>{query}</string>
+				<key>passthroughargument</key>
+				<false/>
+				<key>variables</key>
+				<dict>
+					<key>text</key>
+					<string>{query}</string>
+				</dict>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>C5C36400-C49B-42BB-9D13-51109C686504</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>seconds</key>
+				<string>1.5</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.delay</string>
+			<key>uid</key>
+			<string>7EB5F01C-8583-4A54-BB71-5F50839F367C</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>keyword</key>
+				<string>remind</string>
+				<key>subtext</key>
+				<string></string>
+				<key>text</key>
+				<string>Remind</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>5ECDF748-8BFA-467F-BB1E-4056087AA4B8</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>A simple workfow to open the reminders app and create a new reminder.</string>
+	<key>uidata</key>
+	<dict>
+		<key>054C6308-A1A9-4146-913B-382BD5A97CEC</key>
+		<dict>
+			<key>xpos</key>
+			<integer>55</integer>
+			<key>ypos</key>
+			<integer>135</integer>
+		</dict>
+		<key>5ECDF748-8BFA-467F-BB1E-4056087AA4B8</key>
+		<dict>
+			<key>xpos</key>
+			<integer>55</integer>
+			<key>ypos</key>
+			<integer>310</integer>
+		</dict>
+		<key>6477B1B0-1AD9-4BB8-BD49-68C4EF1AE92E</key>
+		<dict>
+			<key>xpos</key>
+			<integer>1220</integer>
+			<key>ypos</key>
+			<integer>120</integer>
+		</dict>
+		<key>7EB5F01C-8583-4A54-BB71-5F50839F367C</key>
+		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
+			<key>ypos</key>
+			<integer>165</integer>
+		</dict>
+		<key>C5C36400-C49B-42BB-9D13-51109C686504</key>
+		<dict>
+			<key>xpos</key>
+			<integer>335</integer>
+			<key>ypos</key>
+			<integer>165</integer>
+		</dict>
+		<key>C8E2E8EB-E42F-41B3-8ED3-1F3D4C75A0B4</key>
+		<dict>
+			<key>xpos</key>
+			<integer>1035</integer>
+			<key>ypos</key>
+			<integer>155</integer>
+		</dict>
+		<key>CA8C7617-28B8-4FCE-933B-D95B233921DA</key>
+		<dict>
+			<key>xpos</key>
+			<integer>485</integer>
+			<key>ypos</key>
+			<integer>135</integer>
+		</dict>
+		<key>F24978E1-39CC-4C84-ACBD-D0C36302157C</key>
+		<dict>
+			<key>xpos</key>
+			<integer>830</integer>
+			<key>ypos</key>
+			<integer>135</integer>
+		</dict>
+	</dict>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.1</string>
+	<key>webaddress</key>
+	<string>https://www.honma.de</string>
+</dict>
+</plist>
